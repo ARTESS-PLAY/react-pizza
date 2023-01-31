@@ -6,6 +6,11 @@ function Sort() {
 
     const sorts = ['Популярности', 'Цене', 'Алфавиту'];
 
+    const onToggleSort = (i) => {
+        setSelectedSort(i);
+        setOpenPopup(false);
+    };
+
     return (
         <div className="sort">
             <div
@@ -23,7 +28,7 @@ function Sort() {
                     />
                 </svg>
                 <b>Сортировка&nbsp;по:</b>
-                <span>популярности</span>
+                <span>{sorts[selectedSort].toLocaleLowerCase()}</span>
             </div>
             {openPopup && (
                 <div className="sort__popup">
@@ -32,7 +37,7 @@ function Sort() {
                             <li
                                 key={i}
                                 className={i === selectedSort ? 'active' : ''}
-                                onClick={() => setSelectedSort(i)}>
+                                onClick={() => onToggleSort(i)}>
                                 {value}
                             </li>
                         ))}
