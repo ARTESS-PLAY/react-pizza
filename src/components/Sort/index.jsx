@@ -1,13 +1,19 @@
 import React from 'react';
 
-function Sort() {
+function Sort({ activeSort, setActiveSort }) {
     const [openPopup, setOpenPopup] = React.useState(false);
-    const [selectedSort, setSelectedSort] = React.useState(0);
 
-    const sorts = ['Популярности', 'Цене', 'Алфавиту'];
+    const sorts = [
+        { title: 'Популярности ASC', sortParam: 'rating' },
+        { title: 'Популярности DESC', sortParam: '-rating' },
+        { title: 'Цене ASC', sortParam: 'price' },
+        { title: 'Цене DESC', sortParam: '-price' },
+        { title: 'Алфавиту ASC', sortParam: 'name' },
+        { title: 'Алфавиту DESC', sortParam: '-name' },
+    ];
 
-    const onToggleSort = (i) => {
-        setSelectedSort(i);
+    const onToggleSort = (obj) => {
+        setActiveSort(obj);
         setOpenPopup(false);
     };
 
@@ -28,17 +34,17 @@ function Sort() {
                     />
                 </svg>
                 <b>Сортировка&nbsp;по:</b>
-                <span>{sorts[selectedSort].toLocaleLowerCase()}</span>
+                <span>{activeSort.title.toLocaleLowerCase()}</span>
             </div>
             {openPopup && (
                 <div className="sort__popup">
                     <ul>
-                        {sorts.map((value, i) => (
+                        {sorts.map((obj, i) => (
                             <li
                                 key={i}
-                                className={i === selectedSort ? 'active' : ''}
-                                onClick={() => onToggleSort(i)}>
-                                {value}
+                                className={obj.title === activeSort.title ? 'active' : ''}
+                                onClick={() => onToggleSort(obj)}>
+                                {obj.title}
                             </li>
                         ))}
                     </ul>

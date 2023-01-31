@@ -29,6 +29,12 @@ body {
 
     &__title {
         margin: 35px 0;
+        font-weight: 700;
+        font-size: 48px;
+        @media (max-width: 650px) {
+            font-size: 32px;
+            text-align: center;
+        }
     }
 
     &__items {
@@ -78,7 +84,9 @@ body {
         justify-content: space-between;
         align-items: center;
     }
-
+    .content__items {
+        display: block;
+    }
     .content__title {
         display: flex;
         align-items: center;
