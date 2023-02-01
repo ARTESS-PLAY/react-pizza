@@ -1,0 +1,36 @@
+.search {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    svg {
+        width: 20px;
+        height: 20px;
+        opacity: 0.4;
+        &:first-child {
+            position: absolute;
+            left: 5px;
+        }
+    }
+    input {
+        padding: 5px;
+        padding-left: 25px;
+        padding-right: 25px;
+        border-radius: 5px;
+        outline: none;
+        border: 1px solid rgba(0, 0, 0, 0.342);
+        transition: 0.3s;
+        font-size: 16px;
+        &:focus {
+            border: 1px solid rgba(0, 0, 0, 0.742);
+        }
+    }
+    @media (max-width: 600px) {
+        margin-bottom: 10px;
+    }
+}
+
+.close {
+    position: absolute;
+    right: 5px;
+}

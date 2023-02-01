@@ -1,4 +1,7 @@
 {
+    "config": {
+        "totalItems": 10
+    },
     "items": [
         {
             "id": 0,
