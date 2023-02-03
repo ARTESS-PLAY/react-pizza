@@ -2,9 +2,25 @@ import React from 'react';
 import SearchContext from '../../context/SearchContext';
 import cl from './Search.module.scss';
 
+import debounce from 'lodash.debounce';
+
 function Search() {
-    const { search, setSearch } = React.useContext(SearchContext);
+    const { setSearch } = React.useContext(SearchContext);
+    const [localValue, setLocalValue] = React.useState('');
     const inputRef = React.useRef();
+
+    const changeSearch = React.useCallback(
+        debounce((str) => {
+            setSearch(str);
+        }, 550),
+        [],
+    );
+
+    const handleChange = (str) => {
+        setLocalValue(str);
+        changeSearch(str);
+    };
+
     return (
         <div className={cl.search}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -13,12 +29,13 @@ function Search() {
             <input
                 type="text"
                 ref={inputRef}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={localValue}
+                onChange={(e) => handleChange(e.target.value)}
             />
-            {search && (
+            {localValue && (
                 <svg
                     onClick={() => {
+                        setLocalValue('');
                         setSearch('');
                         inputRef.current.focus();
                     }}

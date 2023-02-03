@@ -7,7 +7,7 @@ function Categoties() {
 
     const dispatch = useDispatch();
     const activeCategory = useSelector((state) => state.filter.category);
-    console.log('я перересовался');
+
     return (
         <div className="categories">
             <ul>
