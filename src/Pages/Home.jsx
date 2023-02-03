@@ -7,13 +7,12 @@ import Placeholder from '../components/PizzaCard/Placeholder';
 import Categoties from '../components/Categories';
 import Sort from '../components/Sort';
 import Paginate from '../components/Paginate';
+import { useSelector } from 'react-redux';
 
 function Home({ search }) {
-    const [activeCategory, setActiveCategory] = React.useState(0);
-    const [activeSort, setActiveSort] = React.useState({
-        title: 'Популярности ASC',
-        sortParam: 'rating',
-    });
+    const activeCategory = useSelector((state) => state.filter.category);
+    const activeSort = useSelector((state) => state.filter.sort);
+
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
 
@@ -46,8 +45,8 @@ function Home({ search }) {
     return (
         <div className="container">
             <div className="content__top">
-                <Categoties activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
-                <Sort activeSort={activeSort} setActiveSort={setActiveSort} />
+                <Categoties />
+                <Sort />
             </div>
             <h2 className="content__title">
                 {!isLoading && items.length == 0 ? 'Ничего не найдено :(' : 'Все пиццы'}
