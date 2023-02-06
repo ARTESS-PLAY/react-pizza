@@ -2,20 +2,20 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSort } from '../../redux/slices/filterSlice';
 
+export const sorts = [
+    { title: 'Популярности ASC', sortParam: 'rating' },
+    { title: 'Популярности DESC', sortParam: '-rating' },
+    { title: 'Цене ASC', sortParam: 'price' },
+    { title: 'Цене DESC', sortParam: '-price' },
+    { title: 'Алфавиту ASC', sortParam: 'name' },
+    { title: 'Алфавиту DESC', sortParam: '-name' },
+];
+
 function Sort() {
     const [openPopup, setOpenPopup] = React.useState(false);
 
     const activeSort = useSelector((state) => state.filter.sort);
     const dispatch = useDispatch();
-
-    const sorts = [
-        { title: 'Популярности ASC', sortParam: 'rating' },
-        { title: 'Популярности DESC', sortParam: '-rating' },
-        { title: 'Цене ASC', sortParam: 'price' },
-        { title: 'Цене DESC', sortParam: '-price' },
-        { title: 'Алфавиту ASC', sortParam: 'name' },
-        { title: 'Алфавиту DESC', sortParam: '-name' },
-    ];
 
     const onToggleSort = (obj) => {
         dispatch(setSort({ sort: obj }));
