@@ -13,10 +13,11 @@ import qs from 'qs';
 import { setFilters } from '../redux/slices/filterSlice';
 
 function Home() {
-    // console.log('render');
     const isMount = React.useRef(false);
     const isQueryPars = React.useRef(false);
     const filter = useSelector((state) => state.filter);
+
+    const totalAdd = useSelector((state) => state.cart.countList);
 
     const activeCategory = filter.category;
     const activeSort = filter.sort;
@@ -63,7 +64,6 @@ function Home() {
             dispatch(setFilters({ category: Number(params.activeCategory), sort: sort }));
             setCurrentPage(params.currentPage);
         }
-        console.log(isQueryPars.current);
     }, []);
 
     React.useEffect(() => {
@@ -75,7 +75,6 @@ function Home() {
     }, [activeCategory, activeSort, search, currentPage]);
 
     React.useEffect(() => {
-        console.log(isMount.current, isQueryPars.current);
         if (isMount.current && !isQueryPars.current) {
             const queryString = qs.stringify({
                 activeSort: activeSort.sortParam,
@@ -101,7 +100,11 @@ function Home() {
                     ? Array(limitItemsPerPage)
                           .fill(0)
                           .map((_, i) => <Placeholder key={i} />)
-                    : items.map((el) => <PizzaCard key={el.id} {...el} />)}
+                    : items.map((el) => {
+                          const findItem = totalAdd.find((obj) => obj.id == el.id);
+                          const count = findItem ? findItem.count : 0;
+                          return <PizzaCard key={el.id} count={count} {...el} />;
+                      })}
             </div>
             {!search && totalItems != -1 && (
                 <Paginate totalPage={totalPage} setCurrentPage={setCurrentPage} />

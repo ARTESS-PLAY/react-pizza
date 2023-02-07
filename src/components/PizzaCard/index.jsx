@@ -1,6 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../redux/slices/cartSlice';
 
-function PizzaCard({ name, imageUrl, price, sizes, types }) {
+function PizzaCard({ name, imageUrl, price, sizes, types, id, count }) {
     const pizzaTypes = ['Тонкое', 'Традиционное'];
 
     const [activeType, setActiveType] = React.useState(types[0]);
@@ -12,6 +14,23 @@ function PizzaCard({ name, imageUrl, price, sizes, types }) {
 
     const onClickSize = (sizeIndex) => {
         setActiveSize(sizeIndex);
+    };
+
+    const dispatch = useDispatch();
+
+    const onClickAddToCart = () => {
+        dispatch(
+            addToCart({
+                item: {
+                    name: name,
+                    price: price,
+                    imageUrl: imageUrl,
+                    type: pizzaTypes[activeType],
+                    size: sizes[activeSize],
+                    id: id,
+                },
+            }),
+        );
     };
 
     return (
@@ -42,7 +61,7 @@ function PizzaCard({ name, imageUrl, price, sizes, types }) {
             </div>
             <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {price} ₽</div>
-                <div className="button button--outline button--add">
+                <div className="button button--outline button--add" onClick={onClickAddToCart}>
                     <svg
                         width="12"
                         height="12"
@@ -55,7 +74,7 @@ function PizzaCard({ name, imageUrl, price, sizes, types }) {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>2</i>
+                    {count > 0 && <i>{count}</i>}
                 </div>
             </div>
         </div>

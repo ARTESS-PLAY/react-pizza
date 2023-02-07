@@ -13,6 +13,7 @@ export const sorts = [
 
 function Sort() {
     const [openPopup, setOpenPopup] = React.useState(false);
+    const sortRef = React.useRef();
 
     const activeSort = useSelector((state) => state.filter.sort);
     const dispatch = useDispatch();
@@ -22,8 +23,20 @@ function Sort() {
         setOpenPopup(false);
     };
 
+    const handleOutSideClick = (e) => {
+        const path = e.composedPath();
+        if (!path.includes(sortRef.current)) {
+            setOpenPopup(false);
+        }
+    };
+
+    React.useEffect(() => {
+        document.body.addEventListener('click', handleOutSideClick);
+        return () => document.body.removeEventListener('click', handleOutSideClick);
+    }, []);
+
     return (
-        <div className="sort">
+        <div className="sort" ref={sortRef}>
             <div
                 className={`sort__label ${openPopup ? 'sort__label-active' : ''}`}
                 onClick={() => setOpenPopup((prev) => !prev)}>
