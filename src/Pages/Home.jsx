@@ -30,7 +30,7 @@ function Home() {
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
 
-    const fetchPizzaz = () => {
+    const fetchPizzaz = async () => {
         setIsLoading(true);
         //формируем шаблон для запроса
         let getArgs = `?${activeCategory ? 'category=' + activeCategory + '&' : ''}`;
@@ -38,10 +38,14 @@ function Home() {
         const sort = activeSort.sortParam.replace('-', '');
         const page = search ? '' : `&_page=${currentPage}&_limit=${limitItemsPerPage}`;
         getArgs += `_sort=${sort}&_order=${order}&name_like=${search}${page}`;
-        axios
-            .get(`http://localhost:3005/items/${getArgs}`)
-            .then((res) => setItems(res.data))
-            .finally(() => setIsLoading(false));
+        try {
+            const { data } = await axios.get(`http://localhost:3005/items/${getArgs}`);
+            setItems(data);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     //Махинации для пагинации
