@@ -39,7 +39,7 @@ function Search() {
                 <svg
                     onClick={() => {
                         setLocalValue('');
-                        setSearch('');
+                        dispatch(setSearch(''));
                         inputRef.current.focus();
                     }}
                     className={cl.close}

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import axios from 'axios';
-
 import PizzaCard from '../components/PizzaCard';
 import Placeholder from '../components/PizzaCard/Placeholder';
 import Categoties from '../components/Categories';
@@ -11,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import { setFilters } from '../redux/slices/filterSlice';
+import { fetchPizzas } from '../redux/slices/pizzasSlice';
 
 function Home() {
     const isMount = React.useRef(false);
@@ -18,6 +17,7 @@ function Home() {
     const filter = useSelector((state) => state.filter);
 
     const totalAdd = useSelector((state) => state.cart.countList);
+    const { items, status } = useSelector((state) => state.pizzas);
 
     const activeCategory = filter.category;
     const activeSort = filter.sort;
@@ -27,37 +27,11 @@ function Home() {
 
     const navigate = useNavigate();
 
-    const [items, setItems] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(true);
-
-    const fetchPizzaz = async () => {
-        setIsLoading(true);
-        //формируем шаблон для запроса
-        let getArgs = `?${activeCategory ? 'category=' + activeCategory + '&' : ''}`;
-        const order = activeSort.sortParam.includes('-') ? 'desc' : 'asc';
-        const sort = activeSort.sortParam.replace('-', '');
-        const page = search ? '' : `&_page=${currentPage}&_limit=${limitItemsPerPage}`;
-        getArgs += `_sort=${sort}&_order=${order}&name_like=${search}${page}`;
-        try {
-            const { data } = await axios.get(`http://localhost:3005/items/${getArgs}`);
-            setItems(data);
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     //Махинации для пагинации
     const [currentPage, setCurrentPage] = React.useState(1);
     const [totalItems, setTotalItems] = React.useState(10);
     const limitItemsPerPage = 4;
     const totalPage = Math.ceil(totalItems / limitItemsPerPage);
-    // React.useEffect(() => {
-    //     axios
-    //         .get('http://localhost:3005/config/')
-    //         .then((res) => setTotalItems(res.data.totalItems));
-    // }, []);
 
     //для рендера по гет параметрам
     React.useEffect(() => {
@@ -73,7 +47,9 @@ function Home() {
     React.useEffect(() => {
         window.scrollTo(0, 0);
         if (!isQueryPars.current) {
-            fetchPizzaz();
+            dispatch(
+                fetchPizzas({ activeCategory, activeSort, search, currentPage, limitItemsPerPage }),
+            );
         }
         isQueryPars.current = false;
     }, [activeCategory, activeSort, search, currentPage]);
@@ -97,19 +73,25 @@ function Home() {
                 <Sort />
             </div>
             <h2 className="content__title">
-                {!isLoading && items.length == 0 ? 'Ничего не найдено :(' : 'Все пиццы'}
+                {(status == 'error' || status == 'success') && items.length == 0
+                    ? 'Ничего не найдено :('
+                    : 'Все пиццы'}
             </h2>
-            <div className="content__items">
-                {isLoading
-                    ? Array(limitItemsPerPage)
-                          .fill(0)
-                          .map((_, i) => <Placeholder key={i} />)
-                    : items.map((el) => {
-                          const findItem = totalAdd.find((obj) => obj.id == el.id);
-                          const count = findItem ? findItem.count : 0;
-                          return <PizzaCard key={el.id} count={count} {...el} />;
-                      })}
-            </div>
+            {status == 'error' ? (
+                <p>Произошла ошибка, мы её уже чиним, повторите, пожалуйста попозже</p>
+            ) : (
+                <div className="content__items">
+                    {status == 'loading'
+                        ? Array(limitItemsPerPage)
+                              .fill(0)
+                              .map((_, i) => <Placeholder key={i} />)
+                        : items.map((el) => {
+                              const findItem = totalAdd.find((obj) => obj.id == el.id);
+                              const count = findItem ? findItem.count : 0;
+                              return <PizzaCard key={el.id} count={count} {...el} />;
+                          })}
+                </div>
+            )}
             {!search && totalItems != -1 && (
                 <Paginate totalPage={totalPage} setCurrentPage={setCurrentPage} />
             )}

@@ -23,7 +23,7 @@ const filterSlice = createSlice({
             // state.search = action.payload.search;
         },
         setSearch(state, action) {
-            state.search = action.payload.search;
+            state.search = action.payload;
         },
     },
 });
