@@ -1,15 +1,21 @@
 import axios from 'axios';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function PizzaPage() {
     const [pizzaData, setPizzaData] = React.useState(false);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         async function fetchPizza() {
-            const { data } = await axios.get('http://localhost:3005/items/' + id);
-            setPizzaData(data);
+            try {
+                const { data } = await axios.get('http://localhost:3005/items/' + id);
+                setPizzaData(data);
+            } catch (e) {
+                alert('Ошибка при получении пиццы');
+                navigate('/');
+            }
         }
         fetchPizza();
     }, []);
