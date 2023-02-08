@@ -3,7 +3,12 @@ import axios from 'axios';
 
 export const fetchPizzas = createAsyncThunk(
     '/pizzas/fetchPizzas',
-    async ({ activeCategory, activeSort, search, currentPage, limitItemsPerPage }) => {
+    async ({ currentPage, limitItemsPerPage }, thunkAPI) => {
+        const { filter } = thunkAPI.getState();
+        const activeCategory = filter.category;
+        const activeSort = filter.sort;
+        const search = filter.search;
+
         //формируем шаблон для запроса
         let getArgs = `?${activeCategory ? 'category=' + activeCategory + '&' : ''}`;
         const order = activeSort.sortParam.includes('-') ? 'desc' : 'asc';

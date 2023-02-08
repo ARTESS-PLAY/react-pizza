@@ -47,9 +47,7 @@ function Home() {
     React.useEffect(() => {
         window.scrollTo(0, 0);
         if (!isQueryPars.current) {
-            dispatch(
-                fetchPizzas({ activeCategory, activeSort, search, currentPage, limitItemsPerPage }),
-            );
+            dispatch(fetchPizzas({ currentPage, limitItemsPerPage }));
         }
         isQueryPars.current = false;
     }, [activeCategory, activeSort, search, currentPage]);

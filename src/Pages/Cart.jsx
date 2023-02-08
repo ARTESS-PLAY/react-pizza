@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 
 import CartItem from '../components/CartItem';
 import CartEmpty from '../components/CartEmpty';
-import { deleteCart } from '../redux/slices/cartSlice';
+import { deleteCart, selectCart } from '../redux/slices/cartSlice';
 
 function Cart() {
-    const cartItems = useSelector((state) => state.cart.cartItems);
-    const totalPrice = useSelector((state) => state.cart.totalPrice);
-    const totalCount = useSelector((state) => state.cart.totalCount);
+    const { cartItems, totalPrice, totalCount } = useSelector(selectCart);
 
     const dispath = useDispatch();
     return (
