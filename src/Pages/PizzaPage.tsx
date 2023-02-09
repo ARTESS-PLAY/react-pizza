@@ -2,8 +2,12 @@ import axios from 'axios';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-function PizzaPage() {
-    const [pizzaData, setPizzaData] = React.useState(false);
+const PizzaPage: React.FC = () => {
+    const [pizzaData, setPizzaData] = React.useState<{
+        name: string;
+        imageUrl: string;
+        price: number;
+    }>();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -18,7 +22,7 @@ function PizzaPage() {
             }
         }
         fetchPizza();
-    }, []);
+    }, [id]);
 
     if (!pizzaData) {
         return <h2>Загружаю...</h2>;
@@ -44,6 +48,6 @@ function PizzaPage() {
             </p>
         </div>
     );
-}
+};
 
 export default PizzaPage;

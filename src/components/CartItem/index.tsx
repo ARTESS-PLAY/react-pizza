@@ -1,7 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { cartDec, cartInc, deleteCartItem } from '../../redux/slices/cartSlice';
 
-function CartItem({ item }) {
+type CartItemProps = {
+    item: any;
+};
+
+const CartItem: React.FC<CartItemProps> = ({ item }) => {
     const dispatch = useDispatch();
     return (
         <div className="cart__item">
@@ -79,6 +83,6 @@ function CartItem({ item }) {
             </div>
         </div>
     );
-}
+};
 
 export default CartItem;

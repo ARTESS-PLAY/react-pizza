@@ -3,7 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { selectCart } from '../../redux/slices/cartSlice';
 import Search from '../Search';
 
-function Header() {
+import logoSvg from '../../assets/pizza-logo.svg';
+
+const Header: React.FC = () => {
     const { totalPrice, totalCount } = useSelector(selectCart);
 
     const { pathname } = useLocation();
@@ -13,7 +15,7 @@ function Header() {
             <div className="container">
                 <Link to="/">
                     <div className="header__logo">
-                        <img width="38" src="/img/pizza-logo.svg" alt="Pizza logo" />
+                        <img width="38" src={logoSvg} alt="Pizza logo" />
                         <div>
                             <h1>React Pizza</h1>
                             <p>самая вкусная пицца во вселенной</p>
@@ -61,6 +63,6 @@ function Header() {
             </div>
         </div>
     );
-}
+};
 
 export default Header;

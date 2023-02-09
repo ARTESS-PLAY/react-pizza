@@ -3,17 +3,35 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/slices/cartSlice';
 
-function PizzaCard({ name, imageUrl, price, sizes, types, id, count }) {
+type PizzaCartProps = {
+    name: string;
+    imageUrl: string;
+    price: number;
+    sizes: number[];
+    types: number[];
+    id: number;
+    count: number;
+};
+
+const PizzaCard: React.FC<PizzaCartProps> = ({
+    name,
+    imageUrl,
+    price,
+    sizes,
+    types,
+    id,
+    count,
+}) => {
     const pizzaTypes = ['Тонкое', 'Традиционное'];
 
-    const [activeType, setActiveType] = React.useState(types[0]);
-    const [activeSize, setActiveSize] = React.useState(0);
+    const [activeType, setActiveType] = React.useState<number>(types[0]);
+    const [activeSize, setActiveSize] = React.useState<number>(0);
 
-    const onClickType = (typeId) => {
+    const onClickType = (typeId: number) => {
         setActiveType(typeId);
     };
 
-    const onClickSize = (sizeIndex) => {
+    const onClickSize = (sizeIndex: number) => {
         setActiveSize(sizeIndex);
     };
 
@@ -82,6 +100,6 @@ function PizzaCard({ name, imageUrl, price, sizes, types, id, count }) {
             </div>
         </div>
     );
-}
+};
 
 export default PizzaCard;

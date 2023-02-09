@@ -1,7 +1,12 @@
 import ReactPaginate from 'react-paginate';
 import cl from './Paginate.module.scss';
 
-function Paginate({ totalPage, setCurrentPage }) {
+type PaginateProps = {
+    totalPage: number;
+    setCurrentPage: any;
+};
+
+const Paginate: React.FC<PaginateProps> = ({ totalPage, setCurrentPage }) => {
     return (
         <ReactPaginate
             className={cl.root}
@@ -11,9 +16,9 @@ function Paginate({ totalPage, setCurrentPage }) {
             pageRangeDisplayed={5}
             pageCount={totalPage}
             previousLabel="<"
-            renderOnZeroPageCount={null}
+            // renderOnZeroPageCount={null}
         />
     );
-}
+};
 
 export default Paginate;

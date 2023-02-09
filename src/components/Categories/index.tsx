@@ -2,11 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategory } from '../../redux/slices/filterSlice';
 
-function Categoties() {
-    const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
+const Categoties: React.FC = () => {
+    const categories: string[] = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
     const dispatch = useDispatch();
-    const activeCategory = useSelector((state) => state.filter.category);
+    const activeCategory: number = useSelector((state: any) => state.filter.category);
 
     return (
         <div className="categories">
@@ -22,6 +22,6 @@ function Categoties() {
             </ul>
         </div>
     );
-}
+};
 
 export default Categoties;

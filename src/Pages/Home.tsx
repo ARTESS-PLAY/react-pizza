@@ -11,13 +11,13 @@ import qs from 'qs';
 import { setFilters } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
 
-function Home() {
+const Home: React.FC = () => {
     const isMount = React.useRef(false);
     const isQueryPars = React.useRef(false);
-    const filter = useSelector((state) => state.filter);
+    const filter = useSelector((state: any) => state.filter);
 
-    const totalAdd = useSelector((state) => state.cart.countList);
-    const { items, status } = useSelector((state) => state.pizzas);
+    const totalAdd = useSelector((state: any) => state.cart.countList);
+    const { items, status } = useSelector((state: any) => state.pizzas);
 
     const activeCategory = filter.category;
     const activeSort = filter.sort;
@@ -40,13 +40,14 @@ function Home() {
             const params = qs.parse(window.location.search.substring(1));
             const sort = sorts.find((obj) => obj.sortParam == params.activeSort);
             dispatch(setFilters({ category: Number(params.activeCategory), sort: sort }));
-            setCurrentPage(params.currentPage);
+            setCurrentPage(Number(params.currentPage));
         }
     }, []);
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
         if (!isQueryPars.current) {
+            //@ts-ignore
             dispatch(fetchPizzas({ currentPage, limitItemsPerPage }));
         }
         isQueryPars.current = false;
@@ -83,8 +84,8 @@ function Home() {
                         ? Array(limitItemsPerPage)
                               .fill(0)
                               .map((_, i) => <Placeholder key={i} />)
-                        : items.map((el) => {
-                              const findItem = totalAdd.find((obj) => obj.id == el.id);
+                        : items.map((el: any) => {
+                              const findItem = totalAdd.find((obj: any) => obj.id == el.id);
                               const count = findItem ? findItem.count : 0;
                               return <PizzaCard key={el.id} count={count} {...el} />;
                           })}
@@ -95,6 +96,6 @@ function Home() {
             )}
         </div>
     );
-}
+};
 
 export default Home;
