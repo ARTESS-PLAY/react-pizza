@@ -7,19 +7,19 @@ import { setSearch } from '../../redux/slices/filterSlice';
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
 
-function Search() {
+const Search: React.FC = () => {
     const dispatch = useDispatch();
-    const [localValue, setLocalValue] = React.useState('');
-    const inputRef = React.useRef();
+    const [localValue, setLocalValue] = React.useState<string>('');
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     const changeSearch = React.useCallback(
-        debounce((str) => {
+        debounce((str: string) => {
             dispatch(setSearch(str));
         }, 550),
         [],
     );
 
-    const handleChange = (str) => {
+    const handleChange = (str: string) => {
         setLocalValue(str);
         changeSearch(str);
     };
@@ -40,7 +40,7 @@ function Search() {
                     onClick={() => {
                         setLocalValue('');
                         dispatch(setSearch(''));
-                        inputRef.current.focus();
+                        inputRef.current?.focus();
                     }}
                     className={cl.close}
                     xmlns="http://www.w3.org/2000/svg"
@@ -50,6 +50,6 @@ function Search() {
             )}
         </div>
     );
-}
+};
 
 export default Search;
