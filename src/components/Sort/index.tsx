@@ -1,11 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSort } from '../../redux/slices/filterSlice';
-
-type SortItem = {
-    title: string;
-    sortParam: string;
-};
+import { setSort, SortItem } from '../../redux/slices/filterSlice';
 
 export const sorts: SortItem[] = [
     { title: 'Популярности ASC', sortParam: 'rating' },
@@ -28,9 +23,9 @@ const Sort: React.FC = () => {
         setOpenPopup(false);
     };
 
-    const handleOutSideClick = (e: any) => {
+    const handleOutSideClick = (e: MouseEvent) => {
         const path = e.composedPath();
-        if (!path.includes(sortRef.current)) {
+        if (sortRef.current && !path.includes(sortRef.current)) {
             setOpenPopup(false);
         }
     };

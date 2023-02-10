@@ -1,16 +1,57 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import hash from 'object-hash';
+import { RootState } from '../store';
+
+type CartItem = {
+    hash: string;
+    item: {
+        name: string;
+        price: number;
+        imageUrl: string;
+        parentId: number;
+    };
+    params: {
+        type: string;
+        size: number;
+    };
+    count: number;
+};
+
+type CountItem = {
+    id: number;
+    count: number;
+};
+
+interface CartInitialState {
+    totalPrice: number;
+    totalCount: number;
+    cartItems: CartItem[];
+    countList: CountItem[];
+}
+
+export type CartAddItem = {
+    item: {
+        name: string;
+        price: number;
+        imageUrl: string;
+        type: string;
+        size: number;
+        id: number;
+    };
+};
+
+const initialState: CartInitialState = {
+    totalPrice: 0,
+    totalCount: 0,
+    cartItems: [],
+    countList: [],
+};
 
 const cartSlice = createSlice({
     name: 'cart',
-    initialState: {
-        totalPrice: 0,
-        totalCount: 0,
-        cartItems: [],
-        countList: [],
-    },
+    initialState,
     reducers: {
-        addToCart(state, action) {
+        addToCart(state, action: PayloadAction<CartAddItem>) {
             const item = action.payload.item;
 
             const itemHash = hash(item);
@@ -47,21 +88,33 @@ const cartSlice = createSlice({
             state.totalCount++;
             state.totalPrice += item.price;
         },
-        cartInc(state, action) {
+        cartInc(state, action: PayloadAction<string>) {
             const item = state.cartItems.find((obj) => obj.hash == action.payload);
+            if (!item) {
+                return;
+            }
             item.count++;
             state.totalPrice += item.item.price;
             state.totalCount++;
-            state.countList.find((obj) => obj.id == item.item.parentId).count++;
+            const countItem = state.countList.find((obj) => obj.id == item.item.parentId);
+            if (countItem) {
+                countItem.count++;
+            }
         },
-        cartDec(state, action) {
+        cartDec(state, action: PayloadAction<string>) {
             const item = state.cartItems.find((obj) => obj.hash == action.payload);
+            if (!item) {
+                return;
+            }
             if (item.count == 1) {
                 state.cartItems = state.cartItems.filter((obj) => obj !== item);
             } else {
                 item.count--;
             }
             const countItem = state.countList.find((obj) => obj.id == item.item.parentId);
+            if (!countItem) {
+                return;
+            }
             if (countItem.count == 1) {
                 state.countList = state.countList.filter((obj) => obj !== countItem);
             } else {
@@ -70,11 +123,17 @@ const cartSlice = createSlice({
             state.totalPrice -= item.item.price;
             state.totalCount--;
         },
-        deleteCartItem(state, action) {
+        deleteCartItem(state, action: PayloadAction<string>) {
             const item = state.cartItems.find((obj) => obj.hash == action.payload);
+            if (!item) {
+                return;
+            }
             state.totalCount -= item.count;
             state.totalPrice -= item.count * item.item.price;
             const countItem = state.countList.find((obj) => obj.id == item.item.parentId);
+            if (!countItem) {
+                return;
+            }
             if (countItem.count == item.count) {
                 state.countList = state.countList.filter((obj) => obj !== countItem);
             } else {
@@ -91,7 +150,7 @@ const cartSlice = createSlice({
     },
 });
 
-export const selectCart = (state) => state.cart;
+export const selectCart = (state: RootState) => state.cart;
 
 export const { addToCart, cartInc, cartDec, deleteCart, deleteCartItem } = cartSlice.actions;
 

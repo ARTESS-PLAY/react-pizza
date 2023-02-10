@@ -5,11 +5,12 @@ import Placeholder from '../components/PizzaCard/Placeholder';
 import Categoties from '../components/Categories';
 import Sort, { sorts } from '../components/Sort';
 import Paginate from '../components/Paginate';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import { setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import { fetchPizzas, Status } from '../redux/slices/pizzasSlice';
+import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
     const isMount = React.useRef(false);
@@ -23,7 +24,7 @@ const Home: React.FC = () => {
     const activeSort = filter.sort;
     const search = filter.search;
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const navigate = useNavigate();
 
@@ -39,15 +40,16 @@ const Home: React.FC = () => {
             isQueryPars.current = true;
             const params = qs.parse(window.location.search.substring(1));
             const sort = sorts.find((obj) => obj.sortParam == params.activeSort);
-            dispatch(setFilters({ category: Number(params.activeCategory), sort: sort }));
-            setCurrentPage(Number(params.currentPage));
+            if (sort) {
+                dispatch(setFilters({ category: Number(params.activeCategory), sort: sort }));
+                setCurrentPage(Number(params.currentPage));
+            }
         }
     }, []);
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
         if (!isQueryPars.current) {
-            //@ts-ignore
             dispatch(fetchPizzas({ currentPage, limitItemsPerPage }));
         }
         isQueryPars.current = false;
@@ -72,15 +74,15 @@ const Home: React.FC = () => {
                 <Sort />
             </div>
             <h2 className="content__title">
-                {(status == 'error' || status == 'success') && items.length == 0
+                {(status == Status.ERROR || status == Status.SUCCSESS) && items.length == 0
                     ? 'Ничего не найдено :('
                     : 'Все пиццы'}
             </h2>
-            {status == 'error' ? (
+            {status == Status.ERROR ? (
                 <p>Произошла ошибка, мы её уже чиним, повторите, пожалуйста попозже</p>
             ) : (
                 <div className="content__items">
-                    {status == 'loading'
+                    {status == Status.LOADING
                         ? Array(limitItemsPerPage)
                               .fill(0)
                               .map((_, i) => <Placeholder key={i} />)

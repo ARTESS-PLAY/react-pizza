@@ -3,7 +3,7 @@ import cl from './Paginate.module.scss';
 
 type PaginateProps = {
     totalPage: number;
-    setCurrentPage: any;
+    setCurrentPage: (num: number) => void;
 };
 
 const Paginate: React.FC<PaginateProps> = ({ totalPage, setCurrentPage }) => {

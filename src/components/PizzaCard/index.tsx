@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCart, CartAddItem } from '../../redux/slices/cartSlice';
 
 type PizzaCartProps = {
     name: string;
@@ -38,18 +38,17 @@ const PizzaCard: React.FC<PizzaCartProps> = ({
     const dispatch = useDispatch();
 
     const onClickAddToCart = () => {
-        dispatch(
-            addToCart({
-                item: {
-                    name: name,
-                    price: price,
-                    imageUrl: imageUrl,
-                    type: pizzaTypes[activeType],
-                    size: sizes[activeSize],
-                    id: id,
-                },
-            }),
-        );
+        const item: CartAddItem = {
+            item: {
+                name: name,
+                price: price,
+                imageUrl: imageUrl,
+                type: pizzaTypes[activeType],
+                size: sizes[activeSize],
+                id: id,
+            },
+        };
+        dispatch(addToCart(item));
     };
 
     return (
