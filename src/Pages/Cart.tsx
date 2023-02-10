@@ -86,7 +86,7 @@ const Cart: React.FC = () => {
                         </div>
                     </div>
                     <div className="content__items">
-                        {cartItems.map((el: any) => (
+                        {cartItems.map((el) => (
                             <CartItem item={el} key={el.hash} />
                         ))}
                     </div>

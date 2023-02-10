@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSort, SortItem } from '../../redux/slices/filterSlice';
+import { RootState } from '../../redux/store';
 
 export const sorts: SortItem[] = [
     { title: 'Популярности ASC', sortParam: 'rating' },
@@ -15,7 +16,7 @@ const Sort: React.FC = () => {
     const [openPopup, setOpenPopup] = React.useState(false);
     const sortRef = React.useRef<HTMLDivElement>(null);
 
-    const activeSort = useSelector((state: any) => state.filter.sort);
+    const activeSort = useSelector((state: RootState) => state.filter.sort);
     const dispatch = useDispatch();
 
     const onToggleSort = (obj: SortItem) => {

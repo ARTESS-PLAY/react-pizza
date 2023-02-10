@@ -10,7 +10,7 @@ type PizzaCartProps = {
     sizes: number[];
     types: number[];
     id: number;
-    count: number;
+    count1: number;
 };
 
 const PizzaCard: React.FC<PizzaCartProps> = ({
@@ -20,7 +20,7 @@ const PizzaCard: React.FC<PizzaCartProps> = ({
     sizes,
     types,
     id,
-    count,
+    count1,
 }) => {
     const pizzaTypes = ['Тонкое', 'Традиционное'];
 
@@ -94,7 +94,7 @@ const PizzaCard: React.FC<PizzaCartProps> = ({
                         />
                     </svg>
                     <span>Добавить</span>
-                    {count > 0 && <i>{count}</i>}
+                    {count1 > 0 && <i>{count1}</i>}
                 </div>
             </div>
         </div>

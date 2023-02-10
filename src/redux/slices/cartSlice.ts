@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import hash from 'object-hash';
 import { RootState } from '../store';
 
-type CartItem = {
+export type CartItemType = {
     hash: string;
     item: {
         name: string;
@@ -25,7 +25,7 @@ type CountItem = {
 interface CartInitialState {
     totalPrice: number;
     totalCount: number;
-    cartItems: CartItem[];
+    cartItems: CartItemType[];
     countList: CountItem[];
 }
 

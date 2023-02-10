@@ -10,15 +10,15 @@ import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import { setFilters } from '../redux/slices/filterSlice';
 import { fetchPizzas, Status } from '../redux/slices/pizzasSlice';
-import { useAppDispatch } from '../redux/store';
+import { RootState, useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
     const isMount = React.useRef(false);
     const isQueryPars = React.useRef(false);
-    const filter = useSelector((state: any) => state.filter);
+    const filter = useSelector((state: RootState) => state.filter);
 
-    const totalAdd = useSelector((state: any) => state.cart.countList);
-    const { items, status } = useSelector((state: any) => state.pizzas);
+    const totalAdd = useSelector((state: RootState) => state.cart.countList);
+    const { items, status } = useSelector((state: RootState) => state.pizzas);
 
     const activeCategory = filter.category;
     const activeSort = filter.sort;
@@ -86,10 +86,10 @@ const Home: React.FC = () => {
                         ? Array(limitItemsPerPage)
                               .fill(0)
                               .map((_, i) => <Placeholder key={i} />)
-                        : items.map((el: any) => {
-                              const findItem = totalAdd.find((obj: any) => obj.id == el.id);
+                        : items.map((el) => {
+                              const findItem = totalAdd.find((obj) => obj.id == el.id);
                               const count = findItem ? findItem.count : 0;
-                              return <PizzaCard key={el.id} count={count} {...el} />;
+                              return <PizzaCard key={el.id} count1={count} {...el} />;
                           })}
                 </div>
             )}
