@@ -8,8 +8,9 @@ import Paginate from '../components/Paginate';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
-import { setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas, Status } from '../redux/slices/pizzasSlice';
+import { setFilters } from '../redux/slices/filter/slice';
+import { fetchPizzas } from '../redux/slices/pizza/slice';
+import { Status } from '../redux/slices/pizza/types';
 import { RootState, useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import SearchContext from '../../context/SearchContext';
 import cl from './Search.module.scss';
 
-import { setSearch } from '../../redux/slices/filterSlice';
+import { setSearch } from '../../redux/slices/filter/slice';
 
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';

@@ -1,50 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import hash from 'object-hash';
-import { RootState } from '../store';
+import { setCartFromLS } from '../../../utils/cart/localStorage/localStorage';
+import { RootState } from '../../store';
+import { CartAddItem, CartInitialState } from './types';
 
-export type CartItemType = {
-    hash: string;
-    item: {
-        name: string;
-        price: number;
-        imageUrl: string;
-        parentId: number;
-    };
-    params: {
-        type: string;
-        size: number;
-    };
-    count: number;
-};
-
-type CountItem = {
-    id: number;
-    count: number;
-};
-
-interface CartInitialState {
-    totalPrice: number;
-    totalCount: number;
-    cartItems: CartItemType[];
-    countList: CountItem[];
-}
-
-export type CartAddItem = {
-    item: {
-        name: string;
-        price: number;
-        imageUrl: string;
-        type: string;
-        size: number;
-        id: number;
-    };
-};
+const lSData = setCartFromLS();
 
 const initialState: CartInitialState = {
-    totalPrice: 0,
-    totalCount: 0,
-    cartItems: [],
-    countList: [],
+    totalPrice: lSData.totalPrice,
+    totalCount: lSData.totalCount,
+    cartItems: lSData.items,
+    countList: lSData.itemsCountList,
 };
 
 const cartSlice = createSlice({
@@ -149,8 +115,6 @@ const cartSlice = createSlice({
         },
     },
 });
-
-export const selectCart = (state: RootState) => state.cart;
 
 export const { addToCart, cartInc, cartDec, deleteCart, deleteCartItem } = cartSlice.actions;
 

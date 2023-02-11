@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addToCart, CartAddItem } from '../../redux/slices/cartSlice';
+import { addToCart } from '../../redux/slices/cart/slice';
+import { CartAddItem } from '../../redux/slices/cart/types';
 
 type PizzaCartProps = {
     name: string;
