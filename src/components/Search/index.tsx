@@ -5,6 +5,7 @@ import { setSearch } from '../../redux/slices/filter/slice';
 
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const Search: React.FC = () => {
     const dispatch = useDispatch();
@@ -22,7 +23,10 @@ const Search: React.FC = () => {
         setLocalValue(str);
         changeSearch(str);
     };
-
+    const { pathname } = useLocation();
+    if (pathname === '/cart') {
+        return null;
+    }
     return (
         <div className={cl.search}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

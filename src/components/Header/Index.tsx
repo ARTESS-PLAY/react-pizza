@@ -1,16 +1,18 @@
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 import { selectCart } from '../../redux/slices/cart/selectors';
 import Search from '../Search';
 
 import logoSvg from '../../assets/pizza-logo.svg';
 import React from 'react';
 import { changeCartLS, setCartFromLS } from '../../utils/cart/localStorage/localStorage';
+import { isMobileT } from '../../utils/sreenResolution/typesDevice';
 
 const Header: React.FC = () => {
     const isMount = React.useRef(false);
     const { totalPrice, totalCount, cartItems, countList } = useSelector(selectCart);
-
+    const isMobile = useMediaQuery(isMobileT);
     const { pathname } = useLocation();
 
     React.useEffect(() => {
@@ -36,7 +38,7 @@ const Header: React.FC = () => {
                 </Link>
                 <Search />
                 <div className="header__cart">
-                    {pathname !== '/cart' && (
+                    {pathname !== '/cart' && !isMobile && (
                         <Link to="/cart" className="button button--cart">
                             <span>{totalPrice} ₽</span>
                             <div className="button__delimiter"></div>
