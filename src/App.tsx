@@ -1,8 +1,6 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import SearchContext from './context/SearchContext';
-
 import Home from './Pages/Home';
 import Header from './components/Header/Index';
 

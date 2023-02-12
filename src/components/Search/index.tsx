@@ -1,5 +1,4 @@
 import React from 'react';
-import SearchContext from '../../context/SearchContext';
 import cl from './Search.module.scss';
 
 import { setSearch } from '../../redux/slices/filter/slice';
